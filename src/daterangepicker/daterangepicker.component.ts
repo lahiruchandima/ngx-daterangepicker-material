@@ -9,7 +9,7 @@ import {
     OnInit,
     Output,
     ViewChild,
-    ViewEncapsulation,
+    ViewEncapsulation
 } from '@angular/core';
 import { FormControl, NG_VALUE_ACCESSOR } from '@angular/forms';
 import * as _moment from 'moment';
@@ -30,16 +30,16 @@ export enum SideEnum {
     styleUrls: ['./daterangepicker.component.scss'],
     templateUrl: './daterangepicker.component.html',
     host: {
-        '(click)': 'handleInternalClick($event)',
+        '(click)': 'handleInternalClick($event)'
     },
     encapsulation: ViewEncapsulation.None,
     providers: [
         {
             provide: NG_VALUE_ACCESSOR,
             useExisting: forwardRef(() => DaterangepickerComponent),
-            multi: true,
-        },
-    ],
+            multi: true
+        }
+    ]
 })
 export class DaterangepickerComponent implements OnInit, OnDestroy {
     private _old: { start: any; end: any } = { start: null, end: null };
@@ -116,9 +116,11 @@ export class DaterangepickerComponent implements OnInit, OnDestroy {
     @Input() set locale(value) {
         this._locale = { ...this._localeService.config, ...value };
     }
+
     get locale(): any {
         return this._locale;
     }
+
     // custom ranges
     _ranges: any = {};
 
@@ -126,6 +128,7 @@ export class DaterangepickerComponent implements OnInit, OnDestroy {
         this._ranges = value;
         this.renderRanges();
     }
+
     get ranges(): any {
         return this._ranges;
     }
@@ -145,10 +148,12 @@ export class DaterangepickerComponent implements OnInit, OnDestroy {
     isInvalidDate(date: _moment.Moment) {
         return false;
     }
+
     @Input()
     isCustomDate(date: _moment.Moment) {
         return false;
     }
+
     @Input()
     isTooltipDate(date: _moment.Moment): string {
         return null;
@@ -176,7 +181,8 @@ export class DaterangepickerComponent implements OnInit, OnDestroy {
 
     @ViewChild('pickerContainer', { static: true }) pickerContainer: ElementRef;
 
-    constructor(private el: ElementRef, private _ref: ChangeDetectorRef, private _localeService: LocaleService) {}
+    constructor(private el: ElementRef, private _ref: ChangeDetectorRef, private _localeService: LocaleService) {
+    }
 
     destroy$ = new Subject();
 
@@ -292,6 +298,7 @@ export class DaterangepickerComponent implements OnInit, OnDestroy {
             }
         }
     }
+
     renderTimePicker(side: SideEnum) {
         let selected, minDate;
         const maxDate = this.maxDate;
@@ -320,7 +327,7 @@ export class DaterangepickerComponent implements OnInit, OnDestroy {
             disabledSeconds: [],
             selectedHour: 0,
             selectedMinute: 0,
-            selectedSecond: 0,
+            selectedSecond: 0
         };
         // generate hours
         for (let i = start; i <= end; i++) {
@@ -508,7 +515,7 @@ export class DaterangepickerComponent implements OnInit, OnDestroy {
             classes: {},
             minDate,
             maxDate,
-            calendar,
+            calendar
         };
         if (this.showDropdowns) {
             const currentMonth = calendar[1][1].month();
@@ -530,7 +537,7 @@ export class DaterangepickerComponent implements OnInit, OnDestroy {
                 inMinYear: inMinYear,
                 inMaxYear: inMaxYear,
                 monthArrays: Array.from(Array(12).keys()),
-                yearArrays: years,
+                yearArrays: years
             };
 
             if (side === SideEnum.left) {
@@ -544,6 +551,7 @@ export class DaterangepickerComponent implements OnInit, OnDestroy {
 
         this._buildCells(calendar, side);
     }
+
     setStartDate(startDate): void {
         if (typeof startDate === 'string') {
             this.startDate = moment(startDate, this.locale.format);
@@ -1169,6 +1177,7 @@ export class DaterangepickerComponent implements OnInit, OnDestroy {
             }
         }
     }
+
     /**
      *  clear the daterange picker
      */
@@ -1204,6 +1213,7 @@ export class DaterangepickerComponent implements OnInit, OnDestroy {
         });
         return areBothBefore || areBothAfter;
     }
+
     /**
      *
      * @param date the date to add time

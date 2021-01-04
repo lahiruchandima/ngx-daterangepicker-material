@@ -1,8 +1,10 @@
-import { InjectionToken, Injector } from '@angular/core';
+import { InjectionToken } from '@angular/core';
 import * as _moment from 'moment';
+
 const moment = _moment;
 
 export const LOCALE_CONFIG = new InjectionToken<LocaleConfig>('daterangepicker.config');
+
 /**
  *  LocaleConfig Interface
  */
@@ -20,6 +22,7 @@ export interface LocaleConfig {
     format?: string;
     displayFormat?: string;
 }
+
 /**
  *  DefaultLocaleConfig
  */
@@ -33,5 +36,5 @@ export const DefaultLocaleConfig: LocaleConfig = {
     customRangeLabel: 'Custom range',
     daysOfWeek: moment.weekdaysMin(),
     monthNames: moment.monthsShort(),
-    firstDay: moment.localeData().firstDayOfWeek(),
+    firstDay: moment.localeData().firstDayOfWeek()
 };

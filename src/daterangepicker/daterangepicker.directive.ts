@@ -13,7 +13,7 @@ import {
     OnDestroy,
     OnInit,
     Output,
-    SimpleChanges,
+    SimpleChanges
 } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import * as _moment from 'moment';
@@ -32,15 +32,15 @@ const moment = _moment;
         '(blur)': 'onBlur()',
         '(click)': 'open()',
         '(keyup)': 'inputChanged($event)',
-        autocomplete: 'off',
+        autocomplete: 'off'
     },
     providers: [
         {
             provide: NG_VALUE_ACCESSOR,
             useExisting: forwardRef(() => DaterangepickerDirective),
-            multi: true,
-        },
-    ],
+            multi: true
+        }
+    ]
 })
 export class DaterangepickerDirective implements OnInit, OnChanges, OnDestroy {
     private _onChange = Function.prototype;
@@ -112,9 +112,11 @@ export class DaterangepickerDirective implements OnInit, OnChanges, OnDestroy {
     @Input() set locale(value) {
         this._locale = { ...this._localeService.config, ...value };
     }
+
     get locale(): any {
         return this._locale;
     }
+
     @Input()
     private _endKey = 'endDate';
     private _startKey = 'startDate';
@@ -130,11 +132,12 @@ export class DaterangepickerDirective implements OnInit, OnChanges, OnDestroy {
 
 
     @Input()
-    isInvalidDate = (date: _moment.Moment) => false
+    isInvalidDate = (date: _moment.Moment) => false;
     @Input()
-    isCustomDate = (date: _moment.Moment) => false
+    isCustomDate = (date: _moment.Moment) => false;
     @Input()
-    isTooltipDate = (date: _moment.Moment) => null
+    isTooltipDate = (date: _moment.Moment) => null;
+
     @Input() set startKey(value) {
         if (value !== null) {
             this._startKey = value;
@@ -142,6 +145,7 @@ export class DaterangepickerDirective implements OnInit, OnChanges, OnDestroy {
             this._startKey = 'startDate';
         }
     }
+
     @Input() set endKey(value) {
         if (value !== null) {
             this._endKey = value;
@@ -153,6 +157,7 @@ export class DaterangepickerDirective implements OnInit, OnChanges, OnDestroy {
     get value() {
         return this._value || null;
     }
+
     set value(val) {
         this._value = val;
         this._onChange(val);
@@ -165,7 +170,8 @@ export class DaterangepickerDirective implements OnInit, OnChanges, OnDestroy {
         private _localeService: LocaleService,
         private elementRef: ElementRef,
         private overlay: Overlay
-    ) {}
+    ) {
+    }
 
     ngOnInit(): void {
         this._buildLocale();
@@ -223,9 +229,9 @@ export class DaterangepickerDirective implements OnInit, OnChanges, OnDestroy {
                         originX,
                         originY: this.drops === 'up' ? 'top' : 'bottom',
                         overlayX,
-                        overlayY: this.drops === 'up' ? 'bottom' : 'top',
-                    },
-                ]),
+                        overlayY: this.drops === 'up' ? 'bottom' : 'top'
+                    }
+                ])
         });
         const dateRangePickerPortal = new ComponentPortal(DaterangepickerComponent);
         this.componentRef = this.overlayRef.attach(dateRangePickerPortal);
@@ -311,7 +317,7 @@ export class DaterangepickerDirective implements OnInit, OnChanges, OnDestroy {
             .subscribe((chosenDate) => {
                 if (chosenDate) {
                     const { endDate, startDate } = chosenDate;
-                    this.value = {[this._startKey]: startDate, [this._endKey]: endDate};
+                    this.value = { [this._startKey]: startDate, [this._endKey]: endDate };
                     this.change.emit(this.value);
                     if (typeof chosenDate.chosenLabel === 'string') {
                         this.elementRef.nativeElement.value = chosenDate.chosenLabel;
