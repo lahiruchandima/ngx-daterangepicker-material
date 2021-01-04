@@ -94,7 +94,7 @@ export class DaterangepickerDirective implements OnInit, OnChanges, OnDestroy {
     @Input()
     keepCalendarOpeningWithRange: boolean;
     @Input()
-    showRangeLabelOnInput: boolean;
+    showRangeLabelOnInput = true;
     @Input()
     showCancel = false;
     @Input()
@@ -320,7 +320,7 @@ export class DaterangepickerDirective implements OnInit, OnChanges, OnDestroy {
                     this.value = { [this._startKey]: startDate, [this._endKey]: endDate };
                     this.change.emit(this.value);
                     if (typeof chosenDate.chosenLabel === 'string') {
-                        this.elementRef.nativeElement.value = chosenDate.chosenLabel;
+                        this.elementRef.nativeElement.value = this.getLabel();
                     }
 
                     this.hide();
@@ -393,16 +393,12 @@ export class DaterangepickerDirective implements OnInit, OnChanges, OnDestroy {
                 if (value[this._endKey]) {
                     this.componentRef.instance.setEndDate(value[this._endKey]);
                 }
-                this.componentRef.instance.calculateChosenLabel();
-                if (this.componentRef.instance.chosenLabel) {
-                    this.elementRef.nativeElement.value = this.componentRef.instance.chosenLabel;
-                }
+                this.componentRef.instance.calculateChosenLabel();  // this is required to highlight selected range in range picker
             } else {
                 this.componentRef.instance.clear();
             }
         }
-
-        this.elementRef.nativeElement.value = value ? this.calculateChosenLabel(value[this._startKey], value[this._endKey]) : null;
+        this.elementRef.nativeElement.value = this.getLabel();
     }
 
     inputChanged(e): void {
@@ -435,20 +431,6 @@ export class DaterangepickerDirective implements OnInit, OnChanges, OnDestroy {
         }
     }
 
-    calculateChosenLabel(startDate: _moment.Moment, endDate: _moment.Moment): string {
-        const format = this.locale.displayFormat ? this.locale.displayFormat : this.locale.format;
-
-        if (this.singleDatePicker) {
-            return startDate.format(format);
-        }
-
-        if (startDate && endDate) {
-            return startDate.format(format) + this.locale.separator + endDate.format(format);
-        }
-
-        return null;
-    }
-
     /**
      *  build the locale config
      */
@@ -461,5 +443,73 @@ export class DaterangepickerDirective implements OnInit, OnChanges, OnDestroy {
                 this.locale.format = _moment.localeData().longDateFormat('L');
             }
         }
+    }
+
+    private getLabel(): string {
+        if (!this.value) {
+            return null;
+        }
+        if (!this.locale || !this.locale.separator) {
+            this._buildLocale();
+        }
+        let customRange = true;
+        let i = 0;
+        const rangesArray = [];
+        for (const range in this.ranges) {
+            if (this.ranges[range]) {
+                rangesArray.push(range);
+            }
+        }
+        let chosenRange = null;
+        if (rangesArray.length > 0) {
+            for (const range in this.ranges) {
+                if (this.ranges[range]) {
+                    if (this.timePicker) {
+                        const format = this.timePickerSeconds ? 'YYYY-MM-DD HH:mm:ss' : 'YYYY-MM-DD HH:mm';
+                        // ignore times when comparing dates if time picker seconds is not enabled
+                        if (this.value[this._startKey].format(format) === this.ranges[range][0].format(format) &&
+                            this.value[this._endKey].format(format) === this.ranges[range][1].format(format)) {
+                            customRange = false;
+                            chosenRange = rangesArray[i];
+                            break;
+                        }
+                    } else {
+                        // ignore times when comparing dates if time picker is not enabled
+                        if (this.value[this._startKey].format('YYYY-MM-DD') === this.ranges[range][0].format('YYYY-MM-DD') &&
+                            this.value[this._endKey].format('YYYY-MM-DD') === this.ranges[range][1].format('YYYY-MM-DD')) {
+                            customRange = false;
+                            chosenRange = rangesArray[i];
+                            break;
+                        }
+                    }
+                    i++;
+                }
+            }
+            if (customRange) {
+                if (this.showCustomRangeLabel) {
+                    chosenRange = this.locale.customRangeLabel;
+                } else {
+                    const format = this.locale.displayFormat ? this.locale.displayFormat : this.locale.format;
+                    if (this.singleDatePicker) {
+                        chosenRange = this.value[this._startKey].format(format);
+                    } else if (this.value[this._startKey] && this.value[this._endKey]) {
+                        chosenRange = this.getRangeLabel(this.value[this._startKey], this.value[this._endKey], format);
+                    }
+                }
+            }
+        }
+        return chosenRange;
+    }
+
+    private getRangeLabel(fromDate, toDate, format: string): string {
+        if (fromDate.date() === 1 && moment(fromDate).endOf('month').format('YYYY-MM-DD') === toDate.format('YYYY-MM-DD')) {
+            return fromDate.format('MMMM YYYY');
+        }
+        const fromStr = fromDate.format(format);
+        const toStr = toDate.format(format);
+        if (fromStr === toStr) {
+            return fromStr;
+        }
+        return fromStr + this.locale.separator + toStr;
     }
 }
