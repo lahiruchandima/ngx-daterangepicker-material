@@ -92,9 +92,10 @@ export declare class DaterangepickerDirective implements OnInit, OnChanges, OnDe
     registerOnTouched(fn: any): void;
     private setValue;
     inputChanged(e: any): void;
-    calculateChosenLabel(startDate: _moment.Moment, endDate: _moment.Moment): string;
     /**
      *  build the locale config
      */
     private _buildLocale;
+    private getLabel;
+    private getRangeLabel;
 }
