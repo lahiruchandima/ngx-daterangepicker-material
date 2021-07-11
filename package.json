@@ -80,7 +80,6 @@
     "moment": "^2.24.0",
     "ng-packagr": "^12.1.0",
     "ngx-highlightjs": "^4.1.0-beta",
-    "node-sass": "^4.13.1",
     "prettier": "^2.0.2",
     "protractor": "~7.0.0",
     "rxjs": "^6.5.5",

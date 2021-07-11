@@ -1,17 +1,15 @@
-import { __decorate, __param } from 'tslib';
 import { Overlay, OverlayModule } from '@angular/cdk/overlay';
 import { CommonModule } from '@angular/common';
-import { InjectionToken, Inject, Injectable, EventEmitter, ElementRef, ChangeDetectorRef, Input, Output, ViewChild, Component, ViewEncapsulation, forwardRef, KeyValueDiffers, Directive, NgModule } from '@angular/core';
+import { InjectionToken, Injectable, Inject, EventEmitter, Component, ViewEncapsulation, forwardRef, ElementRef, ChangeDetectorRef, Input, Output, ViewChild, Directive, KeyValueDiffers, NgModule } from '@angular/core';
 import { FormControl, NG_VALUE_ACCESSOR, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
 import * as _moment from 'moment';
-import { isMoment, localeData } from 'moment';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { ComponentPortal } from '@angular/cdk/portal';
 
-const moment = _moment;
+const moment$2 = _moment;
 const LOCALE_CONFIG = new InjectionToken('daterangepicker.config');
 /**
  *  DefaultLocaleConfig
@@ -24,12 +22,12 @@ const DefaultLocaleConfig = {
     cancelLabel: 'Cancel',
     clearLabel: 'Clear',
     customRangeLabel: 'Custom range',
-    daysOfWeek: moment.weekdaysMin(),
-    monthNames: moment.monthsShort(),
-    firstDay: moment.localeData().firstDayOfWeek()
+    daysOfWeek: moment$2.weekdaysMin(),
+    monthNames: moment$2.monthsShort(),
+    firstDay: moment$2.localeData().firstDayOfWeek()
 };
 
-let LocaleService = class LocaleService {
+class LocaleService {
     constructor(_config) {
         this._config = _config;
     }
@@ -39,23 +37,21 @@ let LocaleService = class LocaleService {
         }
         return Object.assign(Object.assign({}, DefaultLocaleConfig), this._config);
     }
-};
+}
+LocaleService.decorators = [
+    { type: Injectable }
+];
 LocaleService.ctorParameters = () => [
     { type: undefined, decorators: [{ type: Inject, args: [LOCALE_CONFIG,] }] }
 ];
-LocaleService = __decorate([
-    Injectable(),
-    __param(0, Inject(LOCALE_CONFIG))
-], LocaleService);
 
-var DaterangepickerComponent_1;
 const moment$1 = _moment;
 var SideEnum;
 (function (SideEnum) {
     SideEnum["left"] = "left";
     SideEnum["right"] = "right";
 })(SideEnum || (SideEnum = {}));
-let DaterangepickerComponent = DaterangepickerComponent_1 = class DaterangepickerComponent {
+class DaterangepickerComponent {
     constructor(el, _ref, _localeService) {
         this.el = el;
         this._ref = _ref;
@@ -1259,163 +1255,78 @@ let DaterangepickerComponent = DaterangepickerComponent_1 = class Daterangepicke
         }
         return days.some((d) => this.isInvalidDate(d));
     }
-};
+}
+DaterangepickerComponent.decorators = [
+    { type: Component, args: [{
+                selector: 'ngx-daterangepicker-material',
+                template: "<div\n    class=\"md-drppicker\"\n    #pickerContainer\n    [ngClass]=\"{\n        ltr: locale.direction === 'ltr',\n        rtl: this.locale.direction === 'rtl',\n        shown: isShown || inline,\n        hidden: !isShown && !inline,\n        inline: inline,\n        double: !singleDatePicker && showCalInRanges,\n        'show-ranges': rangesArray.length\n    }\"\n>\n    <div *ngIf=\"rangesArray.length > 0\" class=\"ranges\">\n        <ul>\n            <li *ngFor=\"let range of rangesArray\">\n                <button\n                    type=\"button\"\n                    [disabled]=\"disableRange(range)\"\n                    [ngClass]=\"{ active: range === chosenRange }\"\n                    (click)=\"clickRange(range)\"\n                >\n                    {{ range }}\n                </button>\n            </li>\n        </ul>\n    </div>\n    <div class=\"calendar\" [ngClass]=\"{ right: singleDatePicker, left: !singleDatePicker }\" *ngIf=\"showCalInRanges\">\n        <div class=\"calendar-table\">\n            <table class=\"table-condensed\" *ngIf=\"calendarVariables\">\n                <thead>\n                    <tr>\n                        <th *ngIf=\"showWeekNumbers || showISOWeekNumbers\"></th>\n                        <ng-container\n                            *ngIf=\"\n                                !calendarVariables.left.minDate ||\n                                (calendarVariables.left.minDate.isBefore(calendarVariables.left.calendar.firstDay) &&\n                                    (!this.linkedCalendars || true))\n                            \"\n                        >\n                            <th>\n                                <button class=\"navigation-button\" mat-icon-button (click)=\"clickPrev(sideEnum.left)\">\n                                    <span class=\"calendar-icon calendar-icon--left\"></span>\n                                </button>\n                            </th>\n                        </ng-container>\n                        <ng-container\n                            *ngIf=\"\n                                !(\n                                    !calendarVariables.left.minDate ||\n                                    (calendarVariables.left.minDate.isBefore(calendarVariables.left.calendar.firstDay) &&\n                                        (!this.linkedCalendars || true))\n                                )\n                            \"\n                        >\n                            <th></th>\n                        </ng-container>\n                        <th colspan=\"5\" class=\"month drp-animate\">\n                            <ng-container *ngIf=\"showDropdowns && calendarVariables.left.dropdowns\">\n                                <div class=\"dropdowns\">\n                                    <mat-select [formControl]=\"fromMonthControl\">\n                                        <mat-option\n                                            *ngFor=\"let m of calendarVariables.left.dropdowns.monthArrays\"\n                                            [value]=\"m\"\n                                            [disabled]=\"\n                                                (calendarVariables.left.dropdowns.inMinYear &&\n                                                    m < calendarVariables.left.minDate.month()) ||\n                                                (calendarVariables.left.dropdowns.inMaxYear && m > calendarVariables.left.maxDate.month())\n                                            \"\n                                        >\n                                            {{ locale.monthNames[m] }}\n                                        </mat-option>\n                                    </mat-select>\n                                </div>\n                                <div class=\"dropdowns\">\n                                    <mat-select [formControl]=\"fromYearControl\">\n                                        <mat-option *ngFor=\"let y of calendarVariables.left.dropdowns.yearArrays\" [value]=\"y\">\n                                            {{ y }}\n                                        </mat-option>\n                                    </mat-select>\n                                </div>\n                            </ng-container>\n                            <ng-container *ngIf=\"!showDropdowns || !calendarVariables.left.dropdowns\">\n                                {{ this.locale.monthNames[calendarVariables?.left?.calendar[1][1].month()] }}\n                                {{ calendarVariables?.left?.calendar[1][1].format(' YYYY') }}\n                            </ng-container>\n                        </th>\n                        <ng-container\n                            *ngIf=\"\n                                (!calendarVariables.left.maxDate ||\n                                    calendarVariables.left.maxDate.isAfter(calendarVariables.left.calendar.lastDay)) &&\n                                (!linkedCalendars || singleDatePicker)\n                            \"\n                        >\n                            <th>\n                                <button class=\"navigation-button\" mat-icon-button (click)=\"clickNext(sideEnum.left)\">\n                                    <span class=\"calendar-icon calendar-icon--right\"></span>\n                                </button>\n                            </th>\n                        </ng-container>\n                        <ng-container\n                            *ngIf=\"\n                                !(\n                                    (!calendarVariables.left.maxDate ||\n                                        calendarVariables.left.maxDate.isAfter(calendarVariables.left.calendar.lastDay)) &&\n                                    (!linkedCalendars || singleDatePicker)\n                                )\n                            \"\n                        >\n                            <th></th>\n                        </ng-container>\n                    </tr>\n                    <tr class=\"week-days\">\n                        <th *ngIf=\"showWeekNumbers || showISOWeekNumbers\" class=\"week\">\n                            <span>{{ this.locale.weekLabel }}</span>\n                        </th>\n                        <th *ngFor=\"let dayofweek of locale.daysOfWeek\">\n                            <span>{{ dayofweek }}</span>\n                        </th>\n                    </tr>\n                </thead>\n                <tbody class=\"drp-animate\">\n                    <tr *ngFor=\"let row of calendarVariables.left.calRows\" [class]=\"calendarVariables.left.classes[row].classList\">\n                        <!-- add week number -->\n                        <td class=\"week\" *ngIf=\"showWeekNumbers\">\n                            <span>{{ calendarVariables.left.calendar[row][0].week() }}</span>\n                        </td>\n                        <td class=\"week\" *ngIf=\"showISOWeekNumbers\">\n                            <span>{{ calendarVariables.left.calendar[row][0].isoWeek() }}</span>\n                        </td>\n                        <!-- cal -->\n                        <td\n                            *ngFor=\"let col of calendarVariables.left.calCols\"\n                            [class]=\"calendarVariables.left.classes[row][col]\"\n                            (click)=\"clickDate($event, sideEnum.left, row, col)\"\n                            (mouseenter)=\"hoverDate($event, sideEnum.left, row, col)\"\n                        >\n                            <span>{{ calendarVariables.left.calendar[row][col].date() }}</span>\n                        </td>\n                    </tr>\n                </tbody>\n            </table>\n        </div>\n        <div class=\"calendar-time\" *ngIf=\"timePicker\">\n            <div class=\"select\">\n                <mat-select\n                    class=\"hourselect\"\n                    [disabled]=\"!startDate\"\n                    [(ngModel)]=\"timepickerVariables.left.selectedHour\"\n                    (ngModelChange)=\"timeChanged(sideEnum.left)\"\n                >\n                    <mat-option\n                        *ngFor=\"let i of timepickerVariables.left.hours\"\n                        [value]=\"i\"\n                        [disabled]=\"timepickerVariables.left.disabledHours.indexOf(i) > -1\"\n                    >\n                        {{ i }}\n                    </mat-option>\n                </mat-select>\n            </div>\n            <div class=\"select\">\n                <mat-select\n                    class=\"minuteselect\"\n                    [disabled]=\"!startDate\"\n                    [(ngModel)]=\"timepickerVariables.left.selectedMinute\"\n                    (ngModelChange)=\"timeChanged(sideEnum.left)\"\n                >\n                    <mat-option\n                        *ngFor=\"let i of timepickerVariables.left.minutes; let index = index\"\n                        [value]=\"i\"\n                        [disabled]=\"timepickerVariables.left.disabledMinutes.indexOf(i) > -1\"\n                    >\n                        {{ timepickerVariables.left.minutesLabel[index] }}\n                    </mat-option>\n                </mat-select>\n                <span class=\"select-highlight\"></span>\n                <span class=\"select-bar\"></span>\n            </div>\n            <div class=\"select\">\n                <mat-select\n                    class=\"secondselect\"\n                    *ngIf=\"timePickerSeconds\"\n                    [disabled]=\"!startDate\"\n                    [(ngModel)]=\"timepickerVariables.left.selectedSecond\"\n                    (ngModelChange)=\"timeChanged(sideEnum.left)\"\n                >\n                    <mat-option\n                        *ngFor=\"let i of timepickerVariables.left.seconds; let index = index\"\n                        [value]=\"i\"\n                        [disabled]=\"timepickerVariables.left.disabledSeconds.indexOf(i) > -1\"\n                    >\n                        {{ timepickerVariables.left.secondsLabel[index] }}\n                    </mat-option>\n                </mat-select>\n                <span class=\"select-highlight\"></span>\n                <span class=\"select-bar\"></span>\n            </div>\n            <div class=\"select\">\n                <mat-select\n                    class=\"ampmselect\"\n                    *ngIf=\"!timePicker24Hour\"\n                    [(ngModel)]=\"timepickerVariables.left.ampmModel\"\n                    (ngModelChange)=\"timeChanged(sideEnum.left)\"\n                >\n                    <mat-option value=\"AM\" [disabled]=\"timepickerVariables.left.amDisabled\">AM</mat-option>\n                    <mat-option value=\"PM\" [disabled]=\"timepickerVariables.left.pmDisabled\">PM</mat-option>\n                </mat-select>\n                <span class=\"select-highlight\"></span>\n                <span class=\"select-bar\"></span>\n            </div>\n        </div>\n    </div>\n    <div class=\"calendar right\" *ngIf=\"showCalInRanges && !singleDatePicker\">\n        <div class=\"calendar-table\">\n            <table class=\"table-condensed\" *ngIf=\"calendarVariables\">\n                <thead>\n                    <tr>\n                        <th *ngIf=\"showWeekNumbers || showISOWeekNumbers\"></th>\n                        <ng-container\n                            *ngIf=\"\n                                (!calendarVariables.right.minDate ||\n                                    calendarVariables.right.minDate.isBefore(calendarVariables.right.calendar.firstDay)) &&\n                                !this.linkedCalendars\n                            \"\n                        >\n                            <th>\n                                <button class=\"navigation-button\" mat-icon-button (click)=\"clickPrev(sideEnum.right)\">\n                                    <span class=\"calendar-icon calendar-icon--left\"></span>\n                                </button>\n                            </th>\n                        </ng-container>\n                        <ng-container\n                            *ngIf=\"\n                                !(\n                                    (!calendarVariables.right.minDate ||\n                                        calendarVariables.right.minDate.isBefore(calendarVariables.right.calendar.firstDay)) &&\n                                    !this.linkedCalendars\n                                )\n                            \"\n                        >\n                            <th></th>\n                        </ng-container>\n                        <th colspan=\"5\" class=\"month\">\n                            <ng-container *ngIf=\"showDropdowns && calendarVariables.right.dropdowns\">\n                                <div class=\"dropdowns\">\n                                    <mat-select [formControl]=\"toMonthControl\">\n                                        <mat-option\n                                            *ngFor=\"let m of calendarVariables.right.dropdowns.monthArrays\"\n                                            [disabled]=\"\n                                                (calendarVariables.right.dropdowns.inMinYear && calendarVariables.right.minDate &&\n                                                    m < calendarVariables.right.minDate.month()) ||\n                                                (calendarVariables.right.dropdowns.inMaxYear && calendarVariables.right.maxDate &&\n                                                m > calendarVariables.right.maxDate.month())\n                                            \"\n                                            [value]=\"m\"\n                                        >\n                                            {{ locale.monthNames[m] }}\n                                        </mat-option>\n                                    </mat-select>\n                                </div>\n                                <div class=\"dropdowns\">\n                                    <mat-select [formControl]=\"toYearControl\">\n                                        <mat-option *ngFor=\"let y of calendarVariables.right.dropdowns.yearArrays\" [value]=\"y\">\n                                            {{ y }}\n                                        </mat-option>\n                                    </mat-select>\n                                </div>\n                            </ng-container>\n                            <ng-container *ngIf=\"!showDropdowns || !calendarVariables.right.dropdowns\">\n                                {{ this.locale.monthNames[calendarVariables?.right?.calendar[1][1].month()] }}\n                                {{ calendarVariables?.right?.calendar[1][1].format(' YYYY') }}\n                            </ng-container>\n                        </th>\n                        <ng-container\n                            *ngIf=\"\n                                !calendarVariables.right.maxDate ||\n                                (calendarVariables.right.maxDate.isAfter(calendarVariables.right.calendar.lastDay) &&\n                                    (!linkedCalendars || singleDatePicker || true))\n                            \"\n                        >\n                            <th>\n                                <button class=\"navigation-button\" mat-icon-button (click)=\"clickNext(sideEnum.right)\">\n                                    <span class=\"calendar-icon calendar-icon--right\"></span>\n                                </button>\n                            </th>\n                        </ng-container>\n                        <ng-container\n                            *ngIf=\"\n                                !(\n                                    !calendarVariables.right.maxDate ||\n                                    (calendarVariables.right.maxDate.isAfter(calendarVariables.right.calendar.lastDay) &&\n                                        (!linkedCalendars || singleDatePicker || true))\n                                )\n                            \"\n                        >\n                            <th></th>\n                        </ng-container>\n                    </tr>\n\n                    <tr class=\"week-days\">\n                        <th *ngIf=\"showWeekNumbers || showISOWeekNumbers\" class=\"week\">\n                            <span>{{ this.locale.weekLabel }}</span>\n                        </th>\n                        <th *ngFor=\"let dayofweek of locale.daysOfWeek\">\n                            <span>{{ dayofweek }}</span>\n                        </th>\n                    </tr>\n                </thead>\n                <tbody>\n                    <tr *ngFor=\"let row of calendarVariables.right.calRows\" [class]=\"calendarVariables.right.classes[row].classList\">\n                        <td class=\"week\" *ngIf=\"showWeekNumbers\">\n                            <span>{{ calendarVariables.right.calendar[row][0].week() }}</span>\n                        </td>\n                        <td class=\"week\" *ngIf=\"showISOWeekNumbers\">\n                            <span>{{ calendarVariables.right.calendar[row][0].isoWeek() }}</span>\n                        </td>\n                        <td\n                            *ngFor=\"let col of calendarVariables.right.calCols\"\n                            [class]=\"calendarVariables.right.classes[row][col]\"\n                            (click)=\"clickDate($event, sideEnum.right, row, col)\"\n                            (mouseenter)=\"hoverDate($event, sideEnum.right, row, col)\"\n                        >\n                            <span>{{ calendarVariables.right.calendar[row][col].date() }}</span>\n                        </td>\n                    </tr>\n                </tbody>\n            </table>\n        </div>\n        <div class=\"calendar-time\" *ngIf=\"timePicker\">\n            <div class=\"select\">\n                <mat-select\n                    class=\"hourselect\"\n                    [disabled]=\"!startDate\"\n                    [(ngModel)]=\"timepickerVariables.right.selectedHour\"\n                    (ngModelChange)=\"timeChanged(sideEnum.right)\"\n                >\n                    <mat-option\n                        *ngFor=\"let i of timepickerVariables.right.hours\"\n                        [value]=\"i\"\n                        [disabled]=\"timepickerVariables.right.disabledHours.indexOf(i) > -1\"\n                    >\n                        {{ i }}\n                    </mat-option>\n                </mat-select>\n                <span class=\"select-highlight\"></span>\n                <span class=\"select-bar\"></span>\n            </div>\n            <div class=\"select\">\n                <mat-select\n                    class=\"minuteselect\"\n                    [disabled]=\"!startDate\"\n                    [(ngModel)]=\"timepickerVariables.right.selectedMinute\"\n                    (ngModelChange)=\"timeChanged(sideEnum.right)\"\n                >\n                    <mat-option\n                        *ngFor=\"let i of timepickerVariables.right.minutes; let index = index\"\n                        [value]=\"i\"\n                        [disabled]=\"timepickerVariables.right.disabledMinutes.indexOf(i) > -1\"\n                    >\n                        {{ timepickerVariables.right.minutesLabel[index] }}\n                    </mat-option>\n                </mat-select>\n                <span class=\"select-highlight\"></span>\n                <span class=\"select-bar\"></span>\n            </div>\n            <div class=\"select\">\n                <mat-select\n                    *ngIf=\"timePickerSeconds\"\n                    class=\"secondselect\"\n                    [disabled]=\"!startDate\"\n                    [(ngModel)]=\"timepickerVariables.right.selectedSecond\"\n                    (ngModelChange)=\"timeChanged(sideEnum.right)\"\n                >\n                    <mat-option\n                        *ngFor=\"let i of timepickerVariables.right.seconds; let index = index\"\n                        [value]=\"i\"\n                        [disabled]=\"timepickerVariables.right.disabledSeconds.indexOf(i) > -1\"\n                    >\n                        {{ timepickerVariables.right.secondsLabel[index] }}\n                    </mat-option>\n                </mat-select>\n                <span class=\"select-highlight\"></span>\n                <span class=\"select-bar\"></span>\n            </div>\n            <div class=\"select\">\n                <mat-select\n                    *ngIf=\"!timePicker24Hour\"\n                    class=\"ampmselect\"\n                    [(ngModel)]=\"timepickerVariables.right.ampmModel\"\n                    (ngModelChange)=\"timeChanged(sideEnum.right)\"\n                >\n                    <mat-option value=\"AM\" [disabled]=\"timepickerVariables.right.amDisabled\">AM</mat-option>\n                    <mat-option value=\"PM\" [disabled]=\"timepickerVariables.right.pmDisabled\">PM</mat-option>\n                </mat-select>\n                <span class=\"select-highlight\"></span>\n                <span class=\"select-bar\"></span>\n            </div>\n        </div>\n    </div>\n    <div class=\"buttons\" *ngIf=\"!autoApply && (!rangesArray.length || (showCalInRanges && !singleDatePicker))\">\n        <div class=\"buttons_input\">\n            <button *ngIf=\"showClearButton\" mat-raised-button type=\"button\" [title]=\"locale.clearLabel\" (click)=\"clear()\">\n                <span class=\"clear-button\">\n                    {{ locale.clearLabel }}\n                    <span class=\"clear-icon\">\n                        <svg viewBox=\"0 0 24 24\">\n                            <path fill=\"currentColor\" d=\"M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z\" />\n                        </svg>\n                    </span>\n                </span>\n            </button>\n            <button *ngIf=\"showCancel\" mat-raised-button (click)=\"clickCancel()\">{{ locale.cancelLabel }}</button>\n            <button [disabled]=\"applyBtn.disabled\" mat-raised-button color=\"primary\" (click)=\"clickApply($event)\">\n                {{ locale.applyLabel }}\n            </button>\n        </div>\n    </div>\n</div>\n",
+                host: {
+                    '(click)': 'handleInternalClick($event)'
+                },
+                encapsulation: ViewEncapsulation.None,
+                providers: [
+                    {
+                        provide: NG_VALUE_ACCESSOR,
+                        useExisting: forwardRef(() => DaterangepickerComponent),
+                        multi: true
+                    }
+                ],
+                styles: [".md-drppicker{border-radius:4px;width:340px;padding:4px;margin-top:-10px;overflow:hidden;font-size:14px;box-shadow:0 2px 4px 0 rgba(0,0,0,.16),0 2px 8px 0 rgba(0,0,0,.12)}.md-drppicker.double{width:auto}.md-drppicker.inline{position:relative;display:inline-block}.md-drppicker:after,.md-drppicker:before{position:absolute;display:inline-block;border-bottom-color:rgba(0,0,0,.2);content:\"\"}.md-drppicker.openscenter:after,.md-drppicker.openscenter:before{left:0;right:0;width:0;margin-left:auto;margin-right:auto}.md-drppicker.single .calendar,.md-drppicker.single .ranges{float:none}.md-drppicker .calendar{max-width:332px;margin:4px}.md-drppicker .calendar.single .calendar-table{border:none}.md-drppicker .calendar td,.md-drppicker .calendar th{padding:1px;white-space:nowrap;text-align:center;min-width:32px;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}.md-drppicker .calendar td span,.md-drppicker .calendar th span{pointer-events:none}.md-drppicker .calendar-table{border:1px solid transparent;padding:4px}.md-drppicker .calendar-table table{border-spacing:2px;border-collapse:separate}.md-drppicker .ranges{float:none;text-align:left;margin:0}.md-drppicker .ranges ul{list-style:none;margin:0 auto;padding:0;width:100%}.md-drppicker .ranges ul li{font-size:12px}.md-drppicker .ranges ul li button{padding:8px 12px;width:100%;background:none;border:none;text-align:left;cursor:pointer;outline:none}.md-drppicker .ranges ul li button[disabled]{opacity:.3}.md-drppicker .ranges ul li button:active{background:transparent}.md-drppicker table{width:100%;margin:0}.md-drppicker td,.md-drppicker th{text-align:center;width:20px;height:20px;border-radius:4px;white-space:nowrap;cursor:pointer;height:2em;width:2em}.md-drppicker td.week,.md-drppicker th.week{font-size:80%}.md-drppicker td.start-date{border-radius:2em 0 0 2em}.md-drppicker td.in-range{border-radius:0}.md-drppicker td.end-date{border-radius:0 2em 2em 0}.md-drppicker td.start-date.end-date{border-radius:4px}.md-drppicker td{margin:.25em 0;transition:background-color .2s ease;border-radius:2em;transform:scale(1);transition:all .45s cubic-bezier(.23,1,.32,1) 0ms}.md-drppicker th.month{width:auto}.md-drppicker option.disabled,.md-drppicker td.disabled{color:#999;cursor:not-allowed;text-decoration:line-through}.md-drppicker .navigation-button{width:32px!important;height:32px!important;line-height:32px!important}.md-drppicker .navigation-button .calendar-icon{transform:rotate(180deg)}.md-drppicker .navigation-button .calendar-icon:after{display:block;content:\"\";height:6px;width:6px;border-width:0 0 2px 2px;border-style:solid;position:absolute;left:50%;top:50%}.md-drppicker .navigation-button .calendar-icon.calendar-icon--left:after{margin-left:1px;transform:translate(-50%,-50%) rotate(45deg)}.md-drppicker .navigation-button .calendar-icon.calendar-icon--right:after{margin-left:-1px;transform:translate(-50%,-50%) rotate(225deg)}.md-drppicker .dropdowns{width:60px}.md-drppicker .dropdowns+.dropdowns{margin-left:4px}.md-drppicker th.month>div{position:relative;display:inline-block}.md-drppicker .calendar-time{text-align:center;margin:4px auto 0;line-height:30px;position:relative}.md-drppicker .calendar-time .select{display:inline}.md-drppicker .calendar-time .select mat-select{width:46px}.md-drppicker .calendar-time select.disabled{color:#ccc;cursor:not-allowed}.md-drppicker .md-drppicker_input{position:relative;padding:0 30px 0 0}.md-drppicker .md-drppicker_input i,.md-drppicker .md-drppicker_input svg{position:absolute;left:8px;top:8px}.md-drppicker.rtl .label-input{padding-right:28px;padding-left:6px}.md-drppicker.rtl .md-drppicker_input i,.md-drppicker.rtl .md-drppicker_input svg{left:auto;right:8px}.md-drppicker .show-ranges .drp-calendar.left{border-left:1px solid #ddd}.md-drppicker .show-calendar .ranges{margin-top:8px}.md-drppicker [hidden]{display:none}.md-drppicker button+button{margin-left:8px}.md-drppicker .clear-button{display:flex;align-items:center;justify-content:center}.md-drppicker .clear-button .clear-icon{font-size:20px!important}.md-drppicker .clear-button .clear-icon svg{width:1em;height:1em;fill:currentColor;pointer-events:none;top:.125em;position:relative}.md-drppicker .buttons{text-align:right;margin:0 5px 5px 0}@media (min-width:564px){.md-drppicker{width:auto}.md-drppicker.single .calendar.left{clear:none}.md-drppicker.ltr{direction:ltr;text-align:left}.md-drppicker.ltr .calendar.left{clear:left}.md-drppicker.ltr .calendar.left .calendar-table{border-right:none;border-top-right-radius:0;border-bottom-right-radius:0}.md-drppicker.ltr .calendar.right{margin-left:0}.md-drppicker.ltr .calendar.right .calendar-table{border-left:none;border-top-left-radius:0;border-bottom-left-radius:0}.md-drppicker.ltr .left .md-drppicker_input,.md-drppicker.ltr .right .md-drppicker_input{padding-right:35px}.md-drppicker.ltr .calendar.left .calendar-table{padding-right:12px}.md-drppicker.ltr .calendar,.md-drppicker.ltr .ranges{float:left}.md-drppicker.rtl{direction:rtl;text-align:right}.md-drppicker.rtl .calendar.left{clear:right;margin-left:0}.md-drppicker.rtl .calendar.left .calendar-table{border-left:none;border-top-left-radius:0;border-bottom-left-radius:0}.md-drppicker.rtl .calendar.right{margin-right:0}.md-drppicker.rtl .calendar.right .calendar-table{border-right:none;border-top-right-radius:0;border-bottom-right-radius:0}.md-drppicker.rtl .calendar.left .calendar-table,.md-drppicker.rtl .left .md-drppicker_input{padding-left:12px}.md-drppicker.rtl .calendar,.md-drppicker.rtl .ranges{text-align:right;float:right}.drp-animate{transform:translate(0);transition:transform .2s ease,opacity .2s ease}.drp-animate.drp-picker-site-this{transition-timing-function:linear}.drp-animate.drp-animate-right{transform:translateX(10%);opacity:0}.drp-animate.drp-animate-left{transform:translateX(-10%);opacity:0}}@media (min-width:730px){.md-drppicker .ranges{width:auto}.md-drppicker.ltr .ranges{float:left}.md-drppicker.rtl .ranges{float:right}.md-drppicker .calendar.left{clear:none!important}}"]
+            },] }
+];
 DaterangepickerComponent.ctorParameters = () => [
     { type: ElementRef },
     { type: ChangeDetectorRef },
     { type: LocaleService }
 ];
-__decorate([
-    Input()
-], DaterangepickerComponent.prototype, "startDate", void 0);
-__decorate([
-    Input()
-], DaterangepickerComponent.prototype, "endDate", void 0);
-__decorate([
-    Input()
-], DaterangepickerComponent.prototype, "dateLimit", void 0);
-__decorate([
-    Input()
-], DaterangepickerComponent.prototype, "minDate", void 0);
-__decorate([
-    Input()
-], DaterangepickerComponent.prototype, "maxDate", void 0);
-__decorate([
-    Input()
-], DaterangepickerComponent.prototype, "autoApply", void 0);
-__decorate([
-    Input()
-], DaterangepickerComponent.prototype, "singleDatePicker", void 0);
-__decorate([
-    Input()
-], DaterangepickerComponent.prototype, "showDropdowns", void 0);
-__decorate([
-    Input()
-], DaterangepickerComponent.prototype, "showWeekNumbers", void 0);
-__decorate([
-    Input()
-], DaterangepickerComponent.prototype, "showISOWeekNumbers", void 0);
-__decorate([
-    Input()
-], DaterangepickerComponent.prototype, "linkedCalendars", void 0);
-__decorate([
-    Input()
-], DaterangepickerComponent.prototype, "autoUpdateInput", void 0);
-__decorate([
-    Input()
-], DaterangepickerComponent.prototype, "alwaysShowCalendars", void 0);
-__decorate([
-    Input()
-], DaterangepickerComponent.prototype, "maxSpan", void 0);
-__decorate([
-    Input()
-], DaterangepickerComponent.prototype, "lockStartDate", void 0);
-__decorate([
-    Input()
-], DaterangepickerComponent.prototype, "timePicker", void 0);
-__decorate([
-    Input()
-], DaterangepickerComponent.prototype, "timePicker24Hour", void 0);
-__decorate([
-    Input()
-], DaterangepickerComponent.prototype, "timePickerIncrement", void 0);
-__decorate([
-    Input()
-], DaterangepickerComponent.prototype, "timePickerSeconds", void 0);
-__decorate([
-    Input()
-], DaterangepickerComponent.prototype, "showClearButton", void 0);
-__decorate([
-    Input()
-], DaterangepickerComponent.prototype, "firstMonthDayClass", void 0);
-__decorate([
-    Input()
-], DaterangepickerComponent.prototype, "lastMonthDayClass", void 0);
-__decorate([
-    Input()
-], DaterangepickerComponent.prototype, "emptyWeekRowClass", void 0);
-__decorate([
-    Input()
-], DaterangepickerComponent.prototype, "firstDayOfNextMonthClass", void 0);
-__decorate([
-    Input()
-], DaterangepickerComponent.prototype, "lastDayOfPreviousMonthClass", void 0);
-__decorate([
-    Input()
-], DaterangepickerComponent.prototype, "locale", null);
-__decorate([
-    Input()
-], DaterangepickerComponent.prototype, "ranges", null);
-__decorate([
-    Input()
-], DaterangepickerComponent.prototype, "showCustomRangeLabel", void 0);
-__decorate([
-    Input()
-], DaterangepickerComponent.prototype, "showCancel", void 0);
-__decorate([
-    Input()
-], DaterangepickerComponent.prototype, "keepCalendarOpeningWithRange", void 0);
-__decorate([
-    Input()
-], DaterangepickerComponent.prototype, "showRangeLabelOnInput", void 0);
-__decorate([
-    Input()
-], DaterangepickerComponent.prototype, "customRangeDirection", void 0);
-__decorate([
-    Input()
-], DaterangepickerComponent.prototype, "isInvalidDate", null);
-__decorate([
-    Input()
-], DaterangepickerComponent.prototype, "isCustomDate", null);
-__decorate([
-    Input()
-], DaterangepickerComponent.prototype, "isTooltipDate", null);
-__decorate([
-    Input()
-], DaterangepickerComponent.prototype, "closeOnAutoApply", void 0);
-__decorate([
-    Output()
-], DaterangepickerComponent.prototype, "chosenDate", void 0);
-__decorate([
-    Output()
-], DaterangepickerComponent.prototype, "rangeClicked", void 0);
-__decorate([
-    Output()
-], DaterangepickerComponent.prototype, "datesUpdated", void 0);
-__decorate([
-    Output()
-], DaterangepickerComponent.prototype, "startDateChanged", void 0);
-__decorate([
-    Output()
-], DaterangepickerComponent.prototype, "endDateChanged", void 0);
-__decorate([
-    Output()
-], DaterangepickerComponent.prototype, "closeDateRangePicker", void 0);
-__decorate([
-    ViewChild('pickerContainer', { static: true })
-], DaterangepickerComponent.prototype, "pickerContainer", void 0);
-DaterangepickerComponent = DaterangepickerComponent_1 = __decorate([
-    Component({
-        selector: 'ngx-daterangepicker-material',
-        template: "<div\n    class=\"md-drppicker\"\n    #pickerContainer\n    [ngClass]=\"{\n        ltr: locale.direction === 'ltr',\n        rtl: this.locale.direction === 'rtl',\n        shown: isShown || inline,\n        hidden: !isShown && !inline,\n        inline: inline,\n        double: !singleDatePicker && showCalInRanges,\n        'show-ranges': rangesArray.length\n    }\"\n>\n    <div *ngIf=\"rangesArray.length > 0\" class=\"ranges\">\n        <ul>\n            <li *ngFor=\"let range of rangesArray\">\n                <button\n                    type=\"button\"\n                    [disabled]=\"disableRange(range)\"\n                    [ngClass]=\"{ active: range === chosenRange }\"\n                    (click)=\"clickRange(range)\"\n                >\n                    {{ range }}\n                </button>\n            </li>\n        </ul>\n    </div>\n    <div class=\"calendar\" [ngClass]=\"{ right: singleDatePicker, left: !singleDatePicker }\" *ngIf=\"showCalInRanges\">\n        <div class=\"calendar-table\">\n            <table class=\"table-condensed\" *ngIf=\"calendarVariables\">\n                <thead>\n                    <tr>\n                        <th *ngIf=\"showWeekNumbers || showISOWeekNumbers\"></th>\n                        <ng-container\n                            *ngIf=\"\n                                !calendarVariables.left.minDate ||\n                                (calendarVariables.left.minDate.isBefore(calendarVariables.left.calendar.firstDay) &&\n                                    (!this.linkedCalendars || true))\n                            \"\n                        >\n                            <th>\n                                <button class=\"navigation-button\" mat-icon-button (click)=\"clickPrev(sideEnum.left)\">\n                                    <span class=\"calendar-icon calendar-icon--left\"></span>\n                                </button>\n                            </th>\n                        </ng-container>\n                        <ng-container\n                            *ngIf=\"\n                                !(\n                                    !calendarVariables.left.minDate ||\n                                    (calendarVariables.left.minDate.isBefore(calendarVariables.left.calendar.firstDay) &&\n                                        (!this.linkedCalendars || true))\n                                )\n                            \"\n                        >\n                            <th></th>\n                        </ng-container>\n                        <th colspan=\"5\" class=\"month drp-animate\">\n                            <ng-container *ngIf=\"showDropdowns && calendarVariables.left.dropdowns\">\n                                <div class=\"dropdowns\">\n                                    <mat-select [formControl]=\"fromMonthControl\">\n                                        <mat-option\n                                            *ngFor=\"let m of calendarVariables.left.dropdowns.monthArrays\"\n                                            [value]=\"m\"\n                                            [disabled]=\"\n                                                (calendarVariables.left.dropdowns.inMinYear &&\n                                                    m < calendarVariables.left.minDate.month()) ||\n                                                (calendarVariables.left.dropdowns.inMaxYear && m > calendarVariables.left.maxDate.month())\n                                            \"\n                                        >\n                                            {{ locale.monthNames[m] }}\n                                        </mat-option>\n                                    </mat-select>\n                                </div>\n                                <div class=\"dropdowns\">\n                                    <mat-select [formControl]=\"fromYearControl\">\n                                        <mat-option *ngFor=\"let y of calendarVariables.left.dropdowns.yearArrays\" [value]=\"y\">\n                                            {{ y }}\n                                        </mat-option>\n                                    </mat-select>\n                                </div>\n                            </ng-container>\n                            <ng-container *ngIf=\"!showDropdowns || !calendarVariables.left.dropdowns\">\n                                {{ this.locale.monthNames[calendarVariables?.left?.calendar[1][1].month()] }}\n                                {{ calendarVariables?.left?.calendar[1][1].format(' YYYY') }}\n                            </ng-container>\n                        </th>\n                        <ng-container\n                            *ngIf=\"\n                                (!calendarVariables.left.maxDate ||\n                                    calendarVariables.left.maxDate.isAfter(calendarVariables.left.calendar.lastDay)) &&\n                                (!linkedCalendars || singleDatePicker)\n                            \"\n                        >\n                            <th>\n                                <button class=\"navigation-button\" mat-icon-button (click)=\"clickNext(sideEnum.left)\">\n                                    <span class=\"calendar-icon calendar-icon--right\"></span>\n                                </button>\n                            </th>\n                        </ng-container>\n                        <ng-container\n                            *ngIf=\"\n                                !(\n                                    (!calendarVariables.left.maxDate ||\n                                        calendarVariables.left.maxDate.isAfter(calendarVariables.left.calendar.lastDay)) &&\n                                    (!linkedCalendars || singleDatePicker)\n                                )\n                            \"\n                        >\n                            <th></th>\n                        </ng-container>\n                    </tr>\n                    <tr class=\"week-days\">\n                        <th *ngIf=\"showWeekNumbers || showISOWeekNumbers\" class=\"week\">\n                            <span>{{ this.locale.weekLabel }}</span>\n                        </th>\n                        <th *ngFor=\"let dayofweek of locale.daysOfWeek\">\n                            <span>{{ dayofweek }}</span>\n                        </th>\n                    </tr>\n                </thead>\n                <tbody class=\"drp-animate\">\n                    <tr *ngFor=\"let row of calendarVariables.left.calRows\" [class]=\"calendarVariables.left.classes[row].classList\">\n                        <!-- add week number -->\n                        <td class=\"week\" *ngIf=\"showWeekNumbers\">\n                            <span>{{ calendarVariables.left.calendar[row][0].week() }}</span>\n                        </td>\n                        <td class=\"week\" *ngIf=\"showISOWeekNumbers\">\n                            <span>{{ calendarVariables.left.calendar[row][0].isoWeek() }}</span>\n                        </td>\n                        <!-- cal -->\n                        <td\n                            *ngFor=\"let col of calendarVariables.left.calCols\"\n                            [class]=\"calendarVariables.left.classes[row][col]\"\n                            (click)=\"clickDate($event, sideEnum.left, row, col)\"\n                            (mouseenter)=\"hoverDate($event, sideEnum.left, row, col)\"\n                        >\n                            <span>{{ calendarVariables.left.calendar[row][col].date() }}</span>\n                        </td>\n                    </tr>\n                </tbody>\n            </table>\n        </div>\n        <div class=\"calendar-time\" *ngIf=\"timePicker\">\n            <div class=\"select\">\n                <mat-select\n                    class=\"hourselect\"\n                    [disabled]=\"!startDate\"\n                    [(ngModel)]=\"timepickerVariables.left.selectedHour\"\n                    (ngModelChange)=\"timeChanged(sideEnum.left)\"\n                >\n                    <mat-option\n                        *ngFor=\"let i of timepickerVariables.left.hours\"\n                        [value]=\"i\"\n                        [disabled]=\"timepickerVariables.left.disabledHours.indexOf(i) > -1\"\n                    >\n                        {{ i }}\n                    </mat-option>\n                </mat-select>\n            </div>\n            <div class=\"select\">\n                <mat-select\n                    class=\"minuteselect\"\n                    [disabled]=\"!startDate\"\n                    [(ngModel)]=\"timepickerVariables.left.selectedMinute\"\n                    (ngModelChange)=\"timeChanged(sideEnum.left)\"\n                >\n                    <mat-option\n                        *ngFor=\"let i of timepickerVariables.left.minutes; let index = index\"\n                        [value]=\"i\"\n                        [disabled]=\"timepickerVariables.left.disabledMinutes.indexOf(i) > -1\"\n                    >\n                        {{ timepickerVariables.left.minutesLabel[index] }}\n                    </mat-option>\n                </mat-select>\n                <span class=\"select-highlight\"></span>\n                <span class=\"select-bar\"></span>\n            </div>\n            <div class=\"select\">\n                <mat-select\n                    class=\"secondselect\"\n                    *ngIf=\"timePickerSeconds\"\n                    [disabled]=\"!startDate\"\n                    [(ngModel)]=\"timepickerVariables.left.selectedSecond\"\n                    (ngModelChange)=\"timeChanged(sideEnum.left)\"\n                >\n                    <mat-option\n                        *ngFor=\"let i of timepickerVariables.left.seconds; let index = index\"\n                        [value]=\"i\"\n                        [disabled]=\"timepickerVariables.left.disabledSeconds.indexOf(i) > -1\"\n                    >\n                        {{ timepickerVariables.left.secondsLabel[index] }}\n                    </mat-option>\n                </mat-select>\n                <span class=\"select-highlight\"></span>\n                <span class=\"select-bar\"></span>\n            </div>\n            <div class=\"select\">\n                <mat-select\n                    class=\"ampmselect\"\n                    *ngIf=\"!timePicker24Hour\"\n                    [(ngModel)]=\"timepickerVariables.left.ampmModel\"\n                    (ngModelChange)=\"timeChanged(sideEnum.left)\"\n                >\n                    <mat-option value=\"AM\" [disabled]=\"timepickerVariables.left.amDisabled\">AM</mat-option>\n                    <mat-option value=\"PM\" [disabled]=\"timepickerVariables.left.pmDisabled\">PM</mat-option>\n                </mat-select>\n                <span class=\"select-highlight\"></span>\n                <span class=\"select-bar\"></span>\n            </div>\n        </div>\n    </div>\n    <div class=\"calendar right\" *ngIf=\"showCalInRanges && !singleDatePicker\">\n        <div class=\"calendar-table\">\n            <table class=\"table-condensed\" *ngIf=\"calendarVariables\">\n                <thead>\n                    <tr>\n                        <th *ngIf=\"showWeekNumbers || showISOWeekNumbers\"></th>\n                        <ng-container\n                            *ngIf=\"\n                                (!calendarVariables.right.minDate ||\n                                    calendarVariables.right.minDate.isBefore(calendarVariables.right.calendar.firstDay)) &&\n                                !this.linkedCalendars\n                            \"\n                        >\n                            <th>\n                                <button class=\"navigation-button\" mat-icon-button (click)=\"clickPrev(sideEnum.right)\">\n                                    <span class=\"calendar-icon calendar-icon--left\"></span>\n                                </button>\n                            </th>\n                        </ng-container>\n                        <ng-container\n                            *ngIf=\"\n                                !(\n                                    (!calendarVariables.right.minDate ||\n                                        calendarVariables.right.minDate.isBefore(calendarVariables.right.calendar.firstDay)) &&\n                                    !this.linkedCalendars\n                                )\n                            \"\n                        >\n                            <th></th>\n                        </ng-container>\n                        <th colspan=\"5\" class=\"month\">\n                            <ng-container *ngIf=\"showDropdowns && calendarVariables.right.dropdowns\">\n                                <div class=\"dropdowns\">\n                                    <mat-select [formControl]=\"toMonthControl\">\n                                        <mat-option\n                                            *ngFor=\"let m of calendarVariables.right.dropdowns.monthArrays\"\n                                            [disabled]=\"\n                                                (calendarVariables.right.dropdowns.inMinYear && calendarVariables.right.minDate &&\n                                                    m < calendarVariables.right.minDate.month()) ||\n                                                (calendarVariables.right.dropdowns.inMaxYear && calendarVariables.right.maxDate &&\n                                                m > calendarVariables.right.maxDate.month())\n                                            \"\n                                            [value]=\"m\"\n                                        >\n                                            {{ locale.monthNames[m] }}\n                                        </mat-option>\n                                    </mat-select>\n                                </div>\n                                <div class=\"dropdowns\">\n                                    <mat-select [formControl]=\"toYearControl\">\n                                        <mat-option *ngFor=\"let y of calendarVariables.right.dropdowns.yearArrays\" [value]=\"y\">\n                                            {{ y }}\n                                        </mat-option>\n                                    </mat-select>\n                                </div>\n                            </ng-container>\n                            <ng-container *ngIf=\"!showDropdowns || !calendarVariables.right.dropdowns\">\n                                {{ this.locale.monthNames[calendarVariables?.right?.calendar[1][1].month()] }}\n                                {{ calendarVariables?.right?.calendar[1][1].format(' YYYY') }}\n                            </ng-container>\n                        </th>\n                        <ng-container\n                            *ngIf=\"\n                                !calendarVariables.right.maxDate ||\n                                (calendarVariables.right.maxDate.isAfter(calendarVariables.right.calendar.lastDay) &&\n                                    (!linkedCalendars || singleDatePicker || true))\n                            \"\n                        >\n                            <th>\n                                <button class=\"navigation-button\" mat-icon-button (click)=\"clickNext(sideEnum.right)\">\n                                    <span class=\"calendar-icon calendar-icon--right\"></span>\n                                </button>\n                            </th>\n                        </ng-container>\n                        <ng-container\n                            *ngIf=\"\n                                !(\n                                    !calendarVariables.right.maxDate ||\n                                    (calendarVariables.right.maxDate.isAfter(calendarVariables.right.calendar.lastDay) &&\n                                        (!linkedCalendars || singleDatePicker || true))\n                                )\n                            \"\n                        >\n                            <th></th>\n                        </ng-container>\n                    </tr>\n\n                    <tr class=\"week-days\">\n                        <th *ngIf=\"showWeekNumbers || showISOWeekNumbers\" class=\"week\">\n                            <span>{{ this.locale.weekLabel }}</span>\n                        </th>\n                        <th *ngFor=\"let dayofweek of locale.daysOfWeek\">\n                            <span>{{ dayofweek }}</span>\n                        </th>\n                    </tr>\n                </thead>\n                <tbody>\n                    <tr *ngFor=\"let row of calendarVariables.right.calRows\" [class]=\"calendarVariables.right.classes[row].classList\">\n                        <td class=\"week\" *ngIf=\"showWeekNumbers\">\n                            <span>{{ calendarVariables.right.calendar[row][0].week() }}</span>\n                        </td>\n                        <td class=\"week\" *ngIf=\"showISOWeekNumbers\">\n                            <span>{{ calendarVariables.right.calendar[row][0].isoWeek() }}</span>\n                        </td>\n                        <td\n                            *ngFor=\"let col of calendarVariables.right.calCols\"\n                            [class]=\"calendarVariables.right.classes[row][col]\"\n                            (click)=\"clickDate($event, sideEnum.right, row, col)\"\n                            (mouseenter)=\"hoverDate($event, sideEnum.right, row, col)\"\n                        >\n                            <span>{{ calendarVariables.right.calendar[row][col].date() }}</span>\n                        </td>\n                    </tr>\n                </tbody>\n            </table>\n        </div>\n        <div class=\"calendar-time\" *ngIf=\"timePicker\">\n            <div class=\"select\">\n                <mat-select\n                    class=\"hourselect\"\n                    [disabled]=\"!startDate\"\n                    [(ngModel)]=\"timepickerVariables.right.selectedHour\"\n                    (ngModelChange)=\"timeChanged(sideEnum.right)\"\n                >\n                    <mat-option\n                        *ngFor=\"let i of timepickerVariables.right.hours\"\n                        [value]=\"i\"\n                        [disabled]=\"timepickerVariables.right.disabledHours.indexOf(i) > -1\"\n                    >\n                        {{ i }}\n                    </mat-option>\n                </mat-select>\n                <span class=\"select-highlight\"></span>\n                <span class=\"select-bar\"></span>\n            </div>\n            <div class=\"select\">\n                <mat-select\n                    class=\"minuteselect\"\n                    [disabled]=\"!startDate\"\n                    [(ngModel)]=\"timepickerVariables.right.selectedMinute\"\n                    (ngModelChange)=\"timeChanged(sideEnum.right)\"\n                >\n                    <mat-option\n                        *ngFor=\"let i of timepickerVariables.right.minutes; let index = index\"\n                        [value]=\"i\"\n                        [disabled]=\"timepickerVariables.right.disabledMinutes.indexOf(i) > -1\"\n                    >\n                        {{ timepickerVariables.right.minutesLabel[index] }}\n                    </mat-option>\n                </mat-select>\n                <span class=\"select-highlight\"></span>\n                <span class=\"select-bar\"></span>\n            </div>\n            <div class=\"select\">\n                <mat-select\n                    *ngIf=\"timePickerSeconds\"\n                    class=\"secondselect\"\n                    [disabled]=\"!startDate\"\n                    [(ngModel)]=\"timepickerVariables.right.selectedSecond\"\n                    (ngModelChange)=\"timeChanged(sideEnum.right)\"\n                >\n                    <mat-option\n                        *ngFor=\"let i of timepickerVariables.right.seconds; let index = index\"\n                        [value]=\"i\"\n                        [disabled]=\"timepickerVariables.right.disabledSeconds.indexOf(i) > -1\"\n                    >\n                        {{ timepickerVariables.right.secondsLabel[index] }}\n                    </mat-option>\n                </mat-select>\n                <span class=\"select-highlight\"></span>\n                <span class=\"select-bar\"></span>\n            </div>\n            <div class=\"select\">\n                <mat-select\n                    *ngIf=\"!timePicker24Hour\"\n                    class=\"ampmselect\"\n                    [(ngModel)]=\"timepickerVariables.right.ampmModel\"\n                    (ngModelChange)=\"timeChanged(sideEnum.right)\"\n                >\n                    <mat-option value=\"AM\" [disabled]=\"timepickerVariables.right.amDisabled\">AM</mat-option>\n                    <mat-option value=\"PM\" [disabled]=\"timepickerVariables.right.pmDisabled\">PM</mat-option>\n                </mat-select>\n                <span class=\"select-highlight\"></span>\n                <span class=\"select-bar\"></span>\n            </div>\n        </div>\n    </div>\n    <div class=\"buttons\" *ngIf=\"!autoApply && (!rangesArray.length || (showCalInRanges && !singleDatePicker))\">\n        <div class=\"buttons_input\">\n            <button *ngIf=\"showClearButton\" mat-raised-button type=\"button\" [title]=\"locale.clearLabel\" (click)=\"clear()\">\n                <span class=\"clear-button\">\n                    {{ locale.clearLabel }}\n                    <span class=\"clear-icon\">\n                        <svg viewBox=\"0 0 24 24\">\n                            <path fill=\"currentColor\" d=\"M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z\" />\n                        </svg>\n                    </span>\n                </span>\n            </button>\n            <button *ngIf=\"showCancel\" mat-raised-button (click)=\"clickCancel()\">{{ locale.cancelLabel }}</button>\n            <button [disabled]=\"applyBtn.disabled\" mat-raised-button color=\"primary\" (click)=\"clickApply($event)\">\n                {{ locale.applyLabel }}\n            </button>\n        </div>\n    </div>\n</div>\n",
-        host: {
-            '(click)': 'handleInternalClick($event)'
-        },
-        encapsulation: ViewEncapsulation.None,
-        providers: [
-            {
-                provide: NG_VALUE_ACCESSOR,
-                useExisting: forwardRef(() => DaterangepickerComponent_1),
-                multi: true
-            }
-        ],
-        styles: [".md-drppicker{border-radius:4px;width:340px;padding:4px;margin-top:-10px;overflow:hidden;font-size:14px;box-shadow:0 2px 4px 0 rgba(0,0,0,.16),0 2px 8px 0 rgba(0,0,0,.12)}.md-drppicker.double{width:auto}.md-drppicker.inline{position:relative;display:inline-block}.md-drppicker:after,.md-drppicker:before{position:absolute;display:inline-block;border-bottom-color:rgba(0,0,0,.2);content:''}.md-drppicker.openscenter:after,.md-drppicker.openscenter:before{left:0;right:0;width:0;margin-left:auto;margin-right:auto}.md-drppicker.single .calendar,.md-drppicker.single .ranges{float:none}.md-drppicker .calendar{max-width:332px;margin:4px}.md-drppicker .calendar.single .calendar-table{border:none}.md-drppicker .calendar td,.md-drppicker .calendar th{padding:1px;white-space:nowrap;text-align:center;min-width:32px;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}.md-drppicker .calendar td span,.md-drppicker .calendar th span{pointer-events:none}.md-drppicker .calendar-table{border:1px solid transparent;padding:4px}.md-drppicker .calendar-table table{border-spacing:2px;border-collapse:separate}.md-drppicker .ranges{float:none;text-align:left;margin:0}.md-drppicker .ranges ul{list-style:none;margin:0 auto;padding:0;width:100%}.md-drppicker .ranges ul li{font-size:12px}.md-drppicker .ranges ul li button{padding:8px 12px;width:100%;background:0 0;border:none;text-align:left;cursor:pointer;outline:0}.md-drppicker .ranges ul li button[disabled]{opacity:.3}.md-drppicker .ranges ul li button:active{background:0 0}.md-drppicker table{width:100%;margin:0}.md-drppicker td,.md-drppicker th{text-align:center;border-radius:4px;white-space:nowrap;cursor:pointer;height:2em;width:2em}.md-drppicker td.week,.md-drppicker th.week{font-size:80%}.md-drppicker td.start-date{border-radius:2em 0 0 2em}.md-drppicker td.in-range{border-radius:0}.md-drppicker td.end-date{border-radius:0 2em 2em 0}.md-drppicker td.start-date.end-date{border-radius:4px}.md-drppicker td{margin:.25em 0;transition:450ms cubic-bezier(.23,1,.32,1);border-radius:2em;transform:scale(1)}.md-drppicker th.month{width:auto}.md-drppicker option.disabled,.md-drppicker td.disabled{color:#999;cursor:not-allowed;text-decoration:line-through}.md-drppicker .navigation-button{width:32px!important;height:32px!important;line-height:32px!important}.md-drppicker .navigation-button .calendar-icon{transform:rotate(180deg)}.md-drppicker .navigation-button .calendar-icon::after{display:block;content:'';height:6px;width:6px;border-width:0 0 2px 2px;border-style:solid;position:absolute;left:50%;top:50%}.md-drppicker .navigation-button .calendar-icon.calendar-icon--left::after{margin-left:1px;transform:translate(-50%,-50%) rotate(45deg)}.md-drppicker .navigation-button .calendar-icon.calendar-icon--right::after{margin-left:-1px;transform:translate(-50%,-50%) rotate(225deg)}.md-drppicker .dropdowns{width:60px}.md-drppicker .dropdowns+.dropdowns{margin-left:4px}.md-drppicker th.month>div{position:relative;display:inline-block}.md-drppicker .calendar-time{text-align:center;margin:4px auto 0;line-height:30px;position:relative}.md-drppicker .calendar-time .select{display:inline}.md-drppicker .calendar-time .select mat-select{width:46px}.md-drppicker .calendar-time select.disabled{color:#ccc;cursor:not-allowed}.md-drppicker .md-drppicker_input{position:relative;padding:0 30px 0 0}.md-drppicker .md-drppicker_input i,.md-drppicker .md-drppicker_input svg{position:absolute;left:8px;top:8px}.md-drppicker.rtl .label-input{padding-right:28px;padding-left:6px}.md-drppicker.rtl .md-drppicker_input i,.md-drppicker.rtl .md-drppicker_input svg{left:auto;right:8px}.md-drppicker .show-ranges .drp-calendar.left{border-left:1px solid #ddd}.md-drppicker .show-calendar .ranges{margin-top:8px}.md-drppicker [hidden]{display:none}.md-drppicker button+button{margin-left:8px}.md-drppicker .clear-button{display:flex;align-items:center;justify-content:center}.md-drppicker .clear-button .clear-icon{font-size:20px!important}.md-drppicker .clear-button .clear-icon svg{width:1em;height:1em;fill:currentColor;pointer-events:none;top:.125em;position:relative}.md-drppicker .buttons{text-align:right;margin:0 5px 5px 0}@media (min-width:564px){.md-drppicker{width:auto}.md-drppicker.single .calendar.left{clear:none}.md-drppicker.ltr{direction:ltr;text-align:left}.md-drppicker.ltr .calendar.left{clear:left}.md-drppicker.ltr .calendar.left .calendar-table{border-right:none;border-top-right-radius:0;border-bottom-right-radius:0;padding-right:12px}.md-drppicker.ltr .calendar.right{margin-left:0}.md-drppicker.ltr .calendar.right .calendar-table{border-left:none;border-top-left-radius:0;border-bottom-left-radius:0}.md-drppicker.ltr .left .md-drppicker_input,.md-drppicker.ltr .right .md-drppicker_input{padding-right:35px}.md-drppicker.ltr .calendar,.md-drppicker.ltr .ranges{float:left}.md-drppicker.rtl{direction:rtl;text-align:right}.md-drppicker.rtl .calendar.left{clear:right;margin-left:0}.md-drppicker.rtl .calendar.left .calendar-table{border-left:none;border-top-left-radius:0;border-bottom-left-radius:0}.md-drppicker.rtl .calendar.right{margin-right:0}.md-drppicker.rtl .calendar.right .calendar-table{border-right:none;border-top-right-radius:0;border-bottom-right-radius:0}.md-drppicker.rtl .calendar.left .calendar-table,.md-drppicker.rtl .left .md-drppicker_input{padding-left:12px}.md-drppicker.rtl .calendar,.md-drppicker.rtl .ranges{text-align:right;float:right}.drp-animate{transform:translate(0);transition:transform .2s,opacity .2s}.drp-animate.drp-picker-site-this{transition-timing-function:linear}.drp-animate.drp-animate-right{transform:translateX(10%);opacity:0}.drp-animate.drp-animate-left{transform:translateX(-10%);opacity:0}}@media (min-width:730px){.md-drppicker .ranges{width:auto}.md-drppicker.ltr .ranges{float:left}.md-drppicker.rtl .ranges{float:right}.md-drppicker .calendar.left{clear:none!important}}"]
-    })
-], DaterangepickerComponent);
+DaterangepickerComponent.propDecorators = {
+    startDate: [{ type: Input }],
+    endDate: [{ type: Input }],
+    dateLimit: [{ type: Input }],
+    minDate: [{ type: Input }],
+    maxDate: [{ type: Input }],
+    autoApply: [{ type: Input }],
+    singleDatePicker: [{ type: Input }],
+    showDropdowns: [{ type: Input }],
+    showWeekNumbers: [{ type: Input }],
+    showISOWeekNumbers: [{ type: Input }],
+    linkedCalendars: [{ type: Input }],
+    autoUpdateInput: [{ type: Input }],
+    alwaysShowCalendars: [{ type: Input }],
+    maxSpan: [{ type: Input }],
+    lockStartDate: [{ type: Input }],
+    timePicker: [{ type: Input }],
+    timePicker24Hour: [{ type: Input }],
+    timePickerIncrement: [{ type: Input }],
+    timePickerSeconds: [{ type: Input }],
+    showClearButton: [{ type: Input }],
+    firstMonthDayClass: [{ type: Input }],
+    lastMonthDayClass: [{ type: Input }],
+    emptyWeekRowClass: [{ type: Input }],
+    firstDayOfNextMonthClass: [{ type: Input }],
+    lastDayOfPreviousMonthClass: [{ type: Input }],
+    locale: [{ type: Input }],
+    ranges: [{ type: Input }],
+    showCustomRangeLabel: [{ type: Input }],
+    showCancel: [{ type: Input }],
+    keepCalendarOpeningWithRange: [{ type: Input }],
+    showRangeLabelOnInput: [{ type: Input }],
+    customRangeDirection: [{ type: Input }],
+    isInvalidDate: [{ type: Input }],
+    isCustomDate: [{ type: Input }],
+    isTooltipDate: [{ type: Input }],
+    closeOnAutoApply: [{ type: Input }],
+    chosenDate: [{ type: Output }],
+    rangeClicked: [{ type: Output }],
+    datesUpdated: [{ type: Output }],
+    startDateChanged: [{ type: Output }],
+    endDateChanged: [{ type: Output }],
+    closeDateRangePicker: [{ type: Output }],
+    pickerContainer: [{ type: ViewChild, args: ['pickerContainer', { static: true },] }]
+};
 
-var DaterangepickerDirective_1;
-const moment$2 = _moment;
-let DaterangepickerDirective = DaterangepickerDirective_1 = class DaterangepickerDirective {
+const moment = _moment;
+class DaterangepickerDirective {
     constructor(_changeDetectorRef, differs, _localeService, elementRef, overlay) {
         this._changeDetectorRef = _changeDetectorRef;
         this.differs = differs;
@@ -1653,11 +1564,11 @@ let DaterangepickerDirective = DaterangepickerDirective_1 = class Daterangepicke
         }
     }
     writeValue(value) {
-        if (isMoment(value)) {
+        if (_moment.isMoment(value)) {
             this.value = { [this._startKey]: value };
         }
         else if (value) {
-            this.value = { [this._startKey]: moment$2(value[this._startKey]), [this._endKey]: moment$2(value[this._endKey]) };
+            this.value = { [this._startKey]: moment(value[this._startKey]), [this._endKey]: moment(value[this._endKey]) };
         }
         else {
             this.value = null;
@@ -1698,11 +1609,11 @@ let DaterangepickerDirective = DaterangepickerDirective_1 = class Daterangepicke
             const dateString = e.target.value.split(this.componentRef.instance.locale.separator);
             let start = null, end = null;
             if (dateString.length === 2) {
-                start = moment$2(dateString[0], this.componentRef.instance.locale.format);
-                end = moment$2(dateString[1], this.componentRef.instance.locale.format);
+                start = moment(dateString[0], this.componentRef.instance.locale.format);
+                end = moment(dateString[1], this.componentRef.instance.locale.format);
             }
             if (this.singleDatePicker || start === null || end === null) {
-                start = moment$2(e.target.value, this.componentRef.instance.locale.format);
+                start = moment(e.target.value, this.componentRef.instance.locale.format);
                 end = start;
             }
             if (!start.isValid() || !end.isValid()) {
@@ -1720,10 +1631,10 @@ let DaterangepickerDirective = DaterangepickerDirective_1 = class Daterangepicke
         this.locale = Object.assign(Object.assign({}, this._localeService.config), this.locale);
         if (!this.locale.format) {
             if (this.timePicker) {
-                this.locale.format = localeData().longDateFormat('lll');
+                this.locale.format = _moment.localeData().longDateFormat('lll');
             }
             else {
-                this.locale.format = localeData().longDateFormat('L');
+                this.locale.format = _moment.localeData().longDateFormat('L');
             }
         }
     }
@@ -1786,7 +1697,7 @@ let DaterangepickerDirective = DaterangepickerDirective_1 = class Daterangepicke
         return chosenRange;
     }
     getRangeLabel(fromDate, toDate, format) {
-        if (fromDate.date() === 1 && moment$2(fromDate).endOf('month').format('YYYY-MM-DD') === toDate.format('YYYY-MM-DD')) {
+        if (fromDate.date() === 1 && moment(fromDate).endOf('month').format('YYYY-MM-DD') === toDate.format('YYYY-MM-DD')) {
             return fromDate.format('MMMM YYYY');
         }
         const fromStr = fromDate.format(format);
@@ -1796,7 +1707,26 @@ let DaterangepickerDirective = DaterangepickerDirective_1 = class Daterangepicke
         }
         return fromStr + this.locale.separator + toStr;
     }
-};
+}
+DaterangepickerDirective.decorators = [
+    { type: Directive, args: [{
+                selector: 'input[ngxDaterangepickerMd]',
+                host: {
+                    '(keyup.esc)': 'hide()',
+                    '(blur)': 'onBlur()',
+                    '(click)': 'open()',
+                    '(keyup)': 'inputChanged($event)',
+                    autocomplete: 'off'
+                },
+                providers: [
+                    {
+                        provide: NG_VALUE_ACCESSOR,
+                        useExisting: forwardRef(() => DaterangepickerDirective),
+                        multi: true
+                    }
+                ]
+            },] }
+];
 DaterangepickerDirective.ctorParameters = () => [
     { type: ChangeDetectorRef },
     { type: KeyValueDiffers },
@@ -1804,168 +1734,68 @@ DaterangepickerDirective.ctorParameters = () => [
     { type: ElementRef },
     { type: Overlay }
 ];
-__decorate([
-    Input()
-], DaterangepickerDirective.prototype, "minDate", void 0);
-__decorate([
-    Input()
-], DaterangepickerDirective.prototype, "maxDate", void 0);
-__decorate([
-    Input()
-], DaterangepickerDirective.prototype, "autoApply", void 0);
-__decorate([
-    Input()
-], DaterangepickerDirective.prototype, "alwaysShowCalendars", void 0);
-__decorate([
-    Input()
-], DaterangepickerDirective.prototype, "showCustomRangeLabel", void 0);
-__decorate([
-    Input()
-], DaterangepickerDirective.prototype, "linkedCalendars", void 0);
-__decorate([
-    Input()
-], DaterangepickerDirective.prototype, "dateLimit", void 0);
-__decorate([
-    Input()
-], DaterangepickerDirective.prototype, "singleDatePicker", void 0);
-__decorate([
-    Input()
-], DaterangepickerDirective.prototype, "showWeekNumbers", void 0);
-__decorate([
-    Input()
-], DaterangepickerDirective.prototype, "showISOWeekNumbers", void 0);
-__decorate([
-    Input()
-], DaterangepickerDirective.prototype, "showDropdowns", void 0);
-__decorate([
-    Input()
-], DaterangepickerDirective.prototype, "showClearButton", void 0);
-__decorate([
-    Input()
-], DaterangepickerDirective.prototype, "customRangeDirection", void 0);
-__decorate([
-    Input()
-], DaterangepickerDirective.prototype, "ranges", void 0);
-__decorate([
-    Input()
-], DaterangepickerDirective.prototype, "opens", void 0);
-__decorate([
-    Input()
-], DaterangepickerDirective.prototype, "drops", void 0);
-__decorate([
-    Input()
-], DaterangepickerDirective.prototype, "lastMonthDayClass", void 0);
-__decorate([
-    Input()
-], DaterangepickerDirective.prototype, "emptyWeekRowClass", void 0);
-__decorate([
-    Input()
-], DaterangepickerDirective.prototype, "firstDayOfNextMonthClass", void 0);
-__decorate([
-    Input()
-], DaterangepickerDirective.prototype, "lastDayOfPreviousMonthClass", void 0);
-__decorate([
-    Input()
-], DaterangepickerDirective.prototype, "keepCalendarOpeningWithRange", void 0);
-__decorate([
-    Input()
-], DaterangepickerDirective.prototype, "showRangeLabelOnInput", void 0);
-__decorate([
-    Input()
-], DaterangepickerDirective.prototype, "showCancel", void 0);
-__decorate([
-    Input()
-], DaterangepickerDirective.prototype, "lockStartDate", void 0);
-__decorate([
-    Input()
-], DaterangepickerDirective.prototype, "timePicker", void 0);
-__decorate([
-    Input()
-], DaterangepickerDirective.prototype, "timePicker24Hour", void 0);
-__decorate([
-    Input()
-], DaterangepickerDirective.prototype, "timePickerIncrement", void 0);
-__decorate([
-    Input()
-], DaterangepickerDirective.prototype, "timePickerSeconds", void 0);
-__decorate([
-    Input()
-], DaterangepickerDirective.prototype, "closeOnAutoApply", void 0);
-__decorate([
-    Input()
-], DaterangepickerDirective.prototype, "locale", null);
-__decorate([
-    Input()
-], DaterangepickerDirective.prototype, "_endKey", void 0);
-__decorate([
-    Output()
-], DaterangepickerDirective.prototype, "change", void 0);
-__decorate([
-    Output()
-], DaterangepickerDirective.prototype, "rangeClicked", void 0);
-__decorate([
-    Output()
-], DaterangepickerDirective.prototype, "datesUpdated", void 0);
-__decorate([
-    Output()
-], DaterangepickerDirective.prototype, "startDateChanged", void 0);
-__decorate([
-    Output()
-], DaterangepickerDirective.prototype, "endDateChanged", void 0);
-__decorate([
-    Input()
-], DaterangepickerDirective.prototype, "isInvalidDate", void 0);
-__decorate([
-    Input()
-], DaterangepickerDirective.prototype, "isCustomDate", void 0);
-__decorate([
-    Input()
-], DaterangepickerDirective.prototype, "isTooltipDate", void 0);
-__decorate([
-    Input()
-], DaterangepickerDirective.prototype, "startKey", null);
-__decorate([
-    Input()
-], DaterangepickerDirective.prototype, "endKey", null);
-DaterangepickerDirective = DaterangepickerDirective_1 = __decorate([
-    Directive({
-        selector: 'input[ngxDaterangepickerMd]',
-        host: {
-            '(keyup.esc)': 'hide()',
-            '(blur)': 'onBlur()',
-            '(click)': 'open()',
-            '(keyup)': 'inputChanged($event)',
-            autocomplete: 'off'
-        },
-        providers: [
-            {
-                provide: NG_VALUE_ACCESSOR,
-                useExisting: forwardRef(() => DaterangepickerDirective_1),
-                multi: true
-            }
-        ]
-    })
-], DaterangepickerDirective);
+DaterangepickerDirective.propDecorators = {
+    minDate: [{ type: Input }],
+    maxDate: [{ type: Input }],
+    autoApply: [{ type: Input }],
+    alwaysShowCalendars: [{ type: Input }],
+    showCustomRangeLabel: [{ type: Input }],
+    linkedCalendars: [{ type: Input }],
+    dateLimit: [{ type: Input }],
+    singleDatePicker: [{ type: Input }],
+    showWeekNumbers: [{ type: Input }],
+    showISOWeekNumbers: [{ type: Input }],
+    showDropdowns: [{ type: Input }],
+    showClearButton: [{ type: Input }],
+    customRangeDirection: [{ type: Input }],
+    ranges: [{ type: Input }],
+    opens: [{ type: Input }],
+    drops: [{ type: Input }],
+    lastMonthDayClass: [{ type: Input }],
+    emptyWeekRowClass: [{ type: Input }],
+    firstDayOfNextMonthClass: [{ type: Input }],
+    lastDayOfPreviousMonthClass: [{ type: Input }],
+    keepCalendarOpeningWithRange: [{ type: Input }],
+    showRangeLabelOnInput: [{ type: Input }],
+    showCancel: [{ type: Input }],
+    lockStartDate: [{ type: Input }],
+    timePicker: [{ type: Input }],
+    timePicker24Hour: [{ type: Input }],
+    timePickerIncrement: [{ type: Input }],
+    timePickerSeconds: [{ type: Input }],
+    closeOnAutoApply: [{ type: Input }],
+    locale: [{ type: Input }],
+    _endKey: [{ type: Input }],
+    change: [{ type: Output }],
+    rangeClicked: [{ type: Output }],
+    datesUpdated: [{ type: Output }],
+    startDateChanged: [{ type: Output }],
+    endDateChanged: [{ type: Output }],
+    isInvalidDate: [{ type: Input }],
+    isCustomDate: [{ type: Input }],
+    isTooltipDate: [{ type: Input }],
+    startKey: [{ type: Input }],
+    endKey: [{ type: Input }]
+};
 
-var NgxDaterangepickerMd_1;
-let NgxDaterangepickerMd = NgxDaterangepickerMd_1 = class NgxDaterangepickerMd {
+class NgxDaterangepickerMd {
     static forRoot(config = {}) {
         return {
-            ngModule: NgxDaterangepickerMd_1,
+            ngModule: NgxDaterangepickerMd,
             providers: [
                 { provide: LOCALE_CONFIG, useValue: config },
                 { provide: LocaleService, useClass: LocaleService, deps: [LOCALE_CONFIG] }
             ]
         };
     }
-};
-NgxDaterangepickerMd = NgxDaterangepickerMd_1 = __decorate([
-    NgModule({
-        declarations: [DaterangepickerComponent, DaterangepickerDirective],
-        imports: [CommonModule, FormsModule, ReactiveFormsModule, MatButtonModule, MatSelectModule, OverlayModule],
-        exports: [DaterangepickerComponent, DaterangepickerDirective]
-    })
-], NgxDaterangepickerMd);
+}
+NgxDaterangepickerMd.decorators = [
+    { type: NgModule, args: [{
+                declarations: [DaterangepickerComponent, DaterangepickerDirective],
+                imports: [CommonModule, FormsModule, ReactiveFormsModule, MatButtonModule, MatSelectModule, OverlayModule],
+                exports: [DaterangepickerComponent, DaterangepickerDirective]
+            },] }
+];
 
 /**
  * Generated bundle index. Do not edit.

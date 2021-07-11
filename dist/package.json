@@ -28,19 +28,16 @@
     "url": "https://github.com/fetrarij/ngx-daterangepicker-material.git"
   },
   "peerDependencies": {
-    "moment": "^2.24.0",
-    "@angular/common": ">=9.0.0",
-    "@angular/core": ">=9.0.0",
-    "@angular/material": ">=9.0.0",
-    "tslib": "^1.10.0"
+    "moment": "^2.24.0"
   },
   "$schema": "./node_modules/ng-packagr/package.schema.json",
-  "module": "fesm5/ngx-daterangepicker-material.js",
+  "module": "fesm2015/ngx-daterangepicker-material.js",
   "es2015": "fesm2015/ngx-daterangepicker-material.js",
-  "esm5": "esm5/ngx-daterangepicker-material.js",
   "esm2015": "esm2015/ngx-daterangepicker-material.js",
-  "fesm5": "fesm5/ngx-daterangepicker-material.js",
   "fesm2015": "fesm2015/ngx-daterangepicker-material.js",
   "metadata": "ngx-daterangepicker-material.metadata.json",
-  "sideEffects": false
+  "sideEffects": false,
+  "dependencies": {
+    "tslib": "^2.2.0"
+  }
 }
