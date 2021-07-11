@@ -11,41 +11,50 @@
                 "build": {
                     "builder": "@angular-devkit/build-angular:browser",
                     "options": {
-                        "aot": true,
                         "outputPath": "demo/dist",
                         "index": "demo/src/index.html",
                         "main": "demo/src/main.ts",
                         "tsConfig": "demo/src/tsconfig.app.json",
                         "polyfills": "demo/src/polyfills.ts",
-                        "assets": ["demo/src/assets", "demo/src/favicon.ico"],
+                        "assets": [
+                            "demo/src/assets",
+                            "demo/src/favicon.ico"
+                        ],
                         "styles": [
                             "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
                             "demo/src/styles.scss",
                             {
-                                "input": "demo/src/highlightjs/material-light.scss"
+                                "input": "demo/src/highlightjs/material-light.scss",
+                                "inject": true
                             },
                             {
-                                "inject": false,
+                                "inject": true,
                                 "input": "demo/src/assets/pink-bluegrey.css",
                                 "bundleName": "pink-bluegrey"
                             },
                             {
-                                "inject": false,
+                                "inject": true,
                                 "input": "demo/src/assets/deeppurple-amber.css",
                                 "bundleName": "deeppurple-amber"
                             },
                             {
-                                "inject": false,
+                                "inject": true,
                                 "input": "demo/src/assets/indigo-pink.css",
                                 "bundleName": "indigo-pink"
                             },
                             {
-                                "inject": false,
+                                "inject": true,
                                 "input": "demo/src/assets/purple-green.css",
                                 "bundleName": "purple-green"
                             }
                         ],
-                        "scripts": []
+                        "scripts": [],
+                        "vendorChunk": true,
+                        "extractLicenses": false,
+                        "buildOptimizer": false,
+                        "sourceMap": true,
+                        "optimization": false,
+                        "namedChunks": true
                     },
                     "configurations": {
                         "production": {
@@ -58,9 +67,7 @@
                             "optimization": true,
                             "outputHashing": "all",
                             "sourceMap": false,
-                            "extractCss": true,
                             "namedChunks": false,
-                            "aot": true,
                             "extractLicenses": true,
                             "vendorChunk": false,
                             "buildOptimizer": true,
@@ -71,7 +78,8 @@
                                 }
                             ]
                         }
-                    }
+                    },
+                    "defaultConfiguration": ""
                 },
                 "serve": {
                     "builder": "@angular-devkit/build-angular:dev-server",

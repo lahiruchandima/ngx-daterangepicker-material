@@ -1,4 +1,4 @@
-import { async, ComponentFixture, fakeAsync, TestBed, tick, inject } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick, inject, waitForAsync } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule, MatInput } from '@angular/material/input';
@@ -28,7 +28,7 @@ describe('SimpleComponent', () => {
         currentOverlayContainer.ngOnDestroy();
         overlayContainer.ngOnDestroy();
       }));
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
             declarations: [
                 SimpleComponent,

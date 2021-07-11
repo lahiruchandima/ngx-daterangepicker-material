@@ -76,7 +76,7 @@ import { TimepickerComponent } from './timepicker/timepicker.component';
             applyLabel: 'Okay',
             firstDay: 3,
         }),
-        RouterModule.forRoot(appRoutes),
+        RouterModule.forRoot(appRoutes, { relativeLinkResolution: 'legacy' }),
     ],
     bootstrap: [AppComponent],
 })
