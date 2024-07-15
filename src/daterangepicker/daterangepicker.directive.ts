@@ -475,8 +475,8 @@ export class DaterangepickerDirective implements OnInit, OnChanges, OnDestroy {
                         }
                     } else {
                         // ignore times when comparing dates if time picker is not enabled
-                        if (this.value[this._startKey].format('YYYY-MM-DD') === this.ranges[range][0].format('YYYY-MM-DD') &&
-                            this.value[this._endKey].format('YYYY-MM-DD') === this.ranges[range][1].format('YYYY-MM-DD')) {
+                        if (this.value[this._startKey]?.format('YYYY-MM-DD') === this.ranges[range][0].format('YYYY-MM-DD') &&
+                            this.value[this._endKey]?.format('YYYY-MM-DD') === this.ranges[range][1].format('YYYY-MM-DD')) {
                             customRange = false;
                             chosenRange = rangesArray[i];
                             break;
