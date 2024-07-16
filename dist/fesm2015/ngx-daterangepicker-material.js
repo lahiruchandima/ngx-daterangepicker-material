@@ -1639,6 +1639,7 @@ class DaterangepickerDirective {
         }
     }
     getLabel() {
+        var _a, _b;
         if (!this.value) {
             return null;
         }
@@ -1669,8 +1670,8 @@ class DaterangepickerDirective {
                     }
                     else {
                         // ignore times when comparing dates if time picker is not enabled
-                        if (this.value[this._startKey].format('YYYY-MM-DD') === this.ranges[range][0].format('YYYY-MM-DD') &&
-                            this.value[this._endKey].format('YYYY-MM-DD') === this.ranges[range][1].format('YYYY-MM-DD')) {
+                        if (((_a = this.value[this._startKey]) === null || _a === void 0 ? void 0 : _a.format('YYYY-MM-DD')) === this.ranges[range][0].format('YYYY-MM-DD') &&
+                            ((_b = this.value[this._endKey]) === null || _b === void 0 ? void 0 : _b.format('YYYY-MM-DD')) === this.ranges[range][1].format('YYYY-MM-DD')) {
                             customRange = false;
                             chosenRange = rangesArray[i];
                             break;

@@ -1888,10 +1888,10 @@
                 .asObservable()
                 .pipe(operators.takeUntil(this.destroy$))
                 .subscribe(function (chosenDate) {
-                var _a;
+                var _c;
                 if (chosenDate) {
                     var endDate = chosenDate.endDate, startDate = chosenDate.startDate;
-                    _this.value = (_a = {}, _a[_this._startKey] = startDate, _a[_this._endKey] = endDate, _a);
+                    _this.value = (_c = {}, _c[_this._startKey] = startDate, _c[_this._endKey] = endDate, _c);
                     _this.change.emit(_this.value);
                     if (typeof chosenDate.chosenLabel === 'string') {
                         _this.elementRef.nativeElement.value = _this.getLabel();
@@ -1934,12 +1934,12 @@
             }
         };
         DaterangepickerDirective.prototype.writeValue = function (value) {
-            var _a, _b;
+            var _c, _d;
             if (_moment__namespace.isMoment(value)) {
-                this.value = (_a = {}, _a[this._startKey] = value, _a);
+                this.value = (_c = {}, _c[this._startKey] = value, _c);
             }
             else if (value) {
-                this.value = (_b = {}, _b[this._startKey] = moment(value[this._startKey]), _b[this._endKey] = moment(value[this._endKey]), _b);
+                this.value = (_d = {}, _d[this._startKey] = moment(value[this._startKey]), _d[this._endKey] = moment(value[this._endKey]), _d);
             }
             else {
                 this.value = null;
@@ -2010,6 +2010,7 @@
             }
         };
         DaterangepickerDirective.prototype.getLabel = function () {
+            var _a, _b;
             if (!this.value) {
                 return null;
             }
@@ -2040,8 +2041,8 @@
                         }
                         else {
                             // ignore times when comparing dates if time picker is not enabled
-                            if (this.value[this._startKey].format('YYYY-MM-DD') === this.ranges[range][0].format('YYYY-MM-DD') &&
-                                this.value[this._endKey].format('YYYY-MM-DD') === this.ranges[range][1].format('YYYY-MM-DD')) {
+                            if (((_a = this.value[this._startKey]) === null || _a === void 0 ? void 0 : _a.format('YYYY-MM-DD')) === this.ranges[range][0].format('YYYY-MM-DD') &&
+                                ((_b = this.value[this._endKey]) === null || _b === void 0 ? void 0 : _b.format('YYYY-MM-DD')) === this.ranges[range][1].format('YYYY-MM-DD')) {
                                 customRange = false;
                                 chosenRange = rangesArray[i];
                                 break;
